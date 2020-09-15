@@ -1,0 +1,3 @@
+configuration {
+	theme: "/home/david/.config/rofi/theme.rasi";
+}
