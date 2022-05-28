@@ -6,6 +6,11 @@ call plug#begin('~/.vim/plugged')
 Plug 'lifepillar/vim-solarized8'
 Plug 'morhetz/gruvbox'
 " === Misc
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/nerdfont.vim'
+Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+Plug 'lambdalisue/fern-git-status.vim'
+Plug 'lambdalisue/glyph-palette.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'vim-pandoc/vim-pandoc'
@@ -38,10 +43,12 @@ Plug 'tpope/vim-speeddating'
 Plug 'machakann/vim-swap'
 Plug 'terryma/vim-smooth-scroll'
 Plug 'vimwiki/vimwiki'
+Plug 'rhysd/clever-f.vim'
+Plug 'iggredible/totitle-vim'
 
 " === IDE
 Plug 'w0rp/ale'
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 Plug 'tpope/vim-projectionist'
 
 " === Purescript
@@ -55,9 +62,11 @@ Plug 'othree/csscomplete.vim'
 " === Javascript
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
+Plug 'digitaltoad/vim-pug'
 
 " === JSON
 Plug 'elzr/vim-json'
+Plug 'neoclide/jsonc.vim'
 
 " === Haskell
 Plug 'neovimhaskell/haskell-vim'
@@ -66,7 +75,8 @@ Plug 'alx741/vim-hindent'
 
 " === Typescript
 Plug 'leafgarland/typescript-vim', {'for': ['typescript', 'typescript.tsx']}
-Plug 'davidfriar/vim-tsx', { 'for': 'typescript.tsx' }
+"Plug 'davidfriar/vim-tsx', { 'for': 'typescript.tsx' }
+Plug 'ianks/vim-tsx', { 'for': 'typescript.tsx' }
 
 " === LATEX
 " Plug 'lervag/vimtex'
@@ -84,6 +94,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'rhysd/rust-doc.vim'
 Plug 'racer-rust/vim-racer'
 Plug 'pest-parser/pest.vim'
+Plug 'cespare/vim-toml'
 
 Plug 'beyondmarc/glsl.vim'
 
@@ -103,6 +114,34 @@ Plug 'sirtaj/vim-openscad'
 
 call plug#end()
 
+function! s:init_fern() abort
+  nmap <buffer><expr>
+          \ <Plug>(fern-my-open-expand-collapse)
+          \ fern#smart#leaf(
+          \   "\<Plug>(fern-action-open:select)",
+          \   "\<Plug>(fern-action-expand)",
+          \   "\<Plug>(fern-action-collapse)",
+          \ )
+  nmap <buffer> <CR> <Plug>(fern-my-open-expand-collapse)
+  highlight FernGitStatusBracket guifg=bg
+endfunction
+
+let g:fern#renderer = "nerdfont"
+let g:fern#default_hidden = 1
+highlight default link FernBranchText   Directory
+
+augroup fern-custom
+  autocmd! *
+  autocmd FileType fern call s:init_fern()
+augroup END
+
+augroup my-glyph-palette
+  autocmd! *
+  autocmd FileType fern call glyph_palette#apply()
+augroup END
+
+let g:clever_f_across_no_line    = 1
+let g:clever_f_fix_key_direction = 1
 
 let g:pymode_python = 'python3'
 let g:python_highlight_all = 1
@@ -138,8 +177,8 @@ let g:ale_fix_on_save = 1
 let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
 \   'javascript.jsx': ['eslint', 'prettier'],
-\   'typescript': ['tslint', 'prettier'],
-\   'typescript.tsx': ['tslint', 'prettier'],
+\   'typescript': [ 'prettier'],
+\   'typescript.tsx': [ 'prettier'],
 \   'css': ['prettier'],
 \   'html': ['tidy'],
 \   'python': [ 'add_blank_lines_for_python_control_statements', 'autopep8',
@@ -215,12 +254,12 @@ set list
 set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¬
 
 
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let NERDTreeAutoDeleteBuffer = 1
-let NERDTreeQuitOnOpen = 1
-let NERDTreeHijackNetrw = 0
-let NERDTreeShowHidden=1
+" let NERDTreeMinimalUI = 1
+" let NERDTreeDirArrows = 1
+" let NERDTreeAutoDeleteBuffer = 1
+" let NERDTreeQuitOnOpen = 1
+" let NERDTreeHijackNetrw = 0
+" let NERDTreeShowHidden=1
 
 let g:filebeagle_show_hidden = 1
 
@@ -228,7 +267,8 @@ let mapleader=" "
 let maplocalleader="\\"
 
 map <leader>v :source ~/.vimrc<CR>
-map <leader>t :NERDTreeToggle<CR>
+" map <leader>t :NERDTreeToggle<CR>
+noremap <silent> <Leader>t :Fern . -drawer -reveal=% -toggle -width=35<CR><C-w>=
 nmap <leader>n :set relativenumber!<CR>
 nmap <leader>N :set number!<CR>
 nmap <leader>g :Goyo<CR>
@@ -525,3 +565,6 @@ nnoremap <C-p> "+p
 let g:vimwiki_list = [{'path': '~/notes/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 let g:vimwiki_global_ext = 0
+
+autocmd FileType vifm set syntax=vim
+

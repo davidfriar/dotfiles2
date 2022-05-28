@@ -32,6 +32,9 @@ window:
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: false
 
+
+  opacity: 0.9
+
   # Window decorations
   #
   # Values for `decorations`:
@@ -88,19 +91,19 @@ scrolling:
 font:
   # Normal (roman) font face
   normal:
-    family: Roboto Mono Nerd Font
+    family: Comic Code Nerd Font
     # The `style` can be specified to pick a specific face.
     #style: Regular
 
   # Bold font face
   bold:
-    family: Roboto Mono Nerd Font
+    family: Comic Code Nerd Font
     # The `style` can be specified to pick a specific face.
     #style: Bold
 
   # Italic font face
   italic:
-    family: Roboto Mono Nerd Font
+    family: Comic Code Nerd Font
     # The `style` can be specified to pick a specific face.
     #style: Italic
 
@@ -327,7 +330,6 @@ bell:
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: .9
 
 # Mouse bindings
 #
@@ -359,12 +361,12 @@ mouse:
   # If this is `true`, the cursor is temporarily hidden when typing.
   hide_when_typing: false
 
-  url:
-    # URL launcher
-    #
-    # This program is executed when clicking on a text which is recognized as a URL.
-    # The URL is always added to the command as the last parameter.
-    launcher: xdg-open
+  #url:
+  #  # URL launcher
+  #  #
+  #  # This program is executed when clicking on a text which is recognized as a URL.
+  #  # The URL is always added to the command as the last parameter.
+  #  launcher: xdg-open
 
     # URL modifiers
     #
@@ -495,7 +497,7 @@ key_bindings:
   - { key: Insert,   mods: Shift,   action: PasteSelection               }
   - { key: Key0,     mods: Control, action: ResetFontSize                }
   - { key: Equals,   mods: Control, action: IncreaseFontSize             }
-  - { key: Subtract, mods: Control, action: DecreaseFontSize             }
+  - { key: Minus, mods: Control, action: DecreaseFontSize             }
   - { key: L,        mods: Control, action: ClearLogNotice               }
   - { key: L,        mods: Control, chars: "\x0c"                        }
   - { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }

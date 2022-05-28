@@ -112,6 +112,8 @@ endif
 
 set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
 
+set previewoptions+=graphicsdelay:0
+
 " ------------------------------------------------------------------------------
 
 " :mark mark /full/directory/path [filename]
@@ -141,7 +143,7 @@ command! make !!make %a
 command! mkcd :mkdir %a | cd %a
 command! vgrep vim "+grep %a"
 command! reload :write | restart
-
+command! fasd :execute 'cd "'.system('fasd -dlR | fzf 2>/dev/tty').'"'
 " ------------------------------------------------------------------------------
 
 " The file type is for the default programs to be used with
@@ -174,12 +176,12 @@ command! reload :write | restart
 " Pdf
 filextype *.pdf zathura %c %i &, apvlv %c, xpdf %c
 fileviewer *.pdf
-  \ vifmimg pdfpreview %px %py %pw %ph %c
+  \ vifmimg pdf %px %py %pw %ph %c
   \ %pc
   \ vifmimg clear
 
 fileviewer *.epub
-  \ vifmimg epubpreview %px %py %pw %ph %c
+  \ vifmimg epub %px %py %pw %ph %c
   \ %pc
   \ vifmimg clear
 " PostScript
@@ -189,25 +191,37 @@ filextype *.ps,*.eps,*.ps.gz
         \ {View in gv}
         \ gv %c %i &,
 
-fileviewer *.gif
-  \ vifmimg gifpreview %px %py %pw %ph %c
-  \ %pc
-  \ vifmimg clear
 
-fileviewer *.ico
-  \ vifmimg magickpreview %px %py %pw %ph %c
-  \ %pc
-  \ vifmimg clear
+fileviewer <image/svg+xml>
+       \ vifmimg svg %px %py %pw %ph %c
+       \ %pc
+       \ vifmimg clear
+
+
+fileviewer <video/*>
+       \ vifmimg video %px %py %pw %ph %c
+       \ %pc
+       \ vifmimg clear
+
+fileviewer <image/*>
+       \ vifmimg draw %px %py %pw %ph %c
+       \ %pc
+       \ vifmimg clear
 
 fileviewer <audio/*>
-  \ vifmimg audiopreview %px %py %pw %ph %c
-  \ %pc
-  \ vifmimg clear
+       \ vifmimg audio %px %py %pw %ph %c
+       \ %pc
+       \ vifmimg clear
 
 fileviewer <font/*>
-  \ vifmimg fontpreview %px %py %pw %ph %c
-  \ %pc
-  \ vifmimg clear
+       \ vifmimg font %px %py %pw %ph %c
+       \ %pc
+       \ vifmimg clear
+
+fileviewer *.otf
+       \ vifmimg font %px %py %pw %ph %c
+       \ %pc
+       \ vifmimg clear
 
 " Djvu
 filextype *.djvu
@@ -237,18 +251,14 @@ filextype *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
         \ mplayer %f,
 fileviewer *.avi,*.mp4,*.wmv,*.dat,*.3gp,*.ogv,*.mkv,*.mpg,*.mpeg,*.vob,
         \*.fl[icv],*.m2v,*.mov,*.webm,*.ts,*.mts,*.m4v,*.r[am],*.qt,*.divx,
-        \ vifmimg videopreview %px %py %pw %ph %c
+        \ vifmimg video %px %py %pw %ph %c
         \ %pc
         \ vifmimg clear
 
 " Web
 filextype *.html,*.htm
-        \ {Open with dwb}
-        \ dwb %f %i &,
-        \ {Open with firefox}
-        \ firefox %f &,
-        \ {Open with uzbl}
-        \ uzbl-browser %f %i &,
+        \ brave %f &
+
 filetype *.html,*.htm links, lynx
 
 " Object
@@ -402,7 +412,9 @@ fileviewer *.c,*.h,*.json,*.js,*.jsx,*.ts,*.tsx,*.hs,*.java,*.py,*.sh,*.rs,*.htm
 " uncommenting one of lines below will result in ignoring 'vi[x]cmd' option
 " for unknown file types.
 " For *nix:
-" filetype * xdg-open
+
+filetype * xdg-open
+
 " For OS X:
 " filetype * open
 " For Windows:
@@ -493,6 +505,7 @@ nnoremap <f6> :move<cr>
 nnoremap <f7> :mkdir<space>
 nnoremap <f8> :delete<cr>
 
+nnoremap J :fasd<cr>
 " ------------------------------------------------------------------------------
 
 " Various customization examples
