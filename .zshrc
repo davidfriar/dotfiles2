@@ -29,6 +29,7 @@ antigen apply
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME"
+alias dotfiles-list="dotfiles ls-tree --full-tree -r HEAD --name-only"
 alias ls='exa -l'
 
 eval "$(fasd --init auto)"
@@ -46,3 +47,5 @@ fm()
 export HIE_HOOGLE_DATABASE=/home/david/.hoogle/default-haskell-5.0.18.hoo
 
 eval "$RUN"
+
+[ -f "/home/david/.ghcup/env" ] && source "/home/david/.ghcup/env" # ghcup-env
